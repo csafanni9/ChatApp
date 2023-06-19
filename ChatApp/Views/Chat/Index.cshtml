@@ -1,0 +1,82 @@
+﻿@model String[]
+
+@{
+    ViewBag.Title = "ChatApp";
+}
+
+<div class="header">
+    <h1>ChatApp</h1>
+</div>
+
+<div class="body">
+    @if (Model[0] != "")
+    {
+        int counter = 0;
+        foreach (String elem in Model)
+        {
+            if (counter % 2 == 0)
+            {
+                <p class="question">Kérdés</p>
+                <div class="question-body">
+                    <p class="question-body">
+                        @if (elem.Contains("\n"))
+                        {
+                            char[] charArray = { '\n' };
+                            string[] lineList = elem.Split(charArray);
+                            foreach (string line in lineList)
+                            {
+                                <span>@line</span><br />
+                            }
+                        }
+                        else
+                        {
+                            <span>@elem</span>
+                        }
+                    </p>
+                </div>
+            }
+            else
+            {
+                <p class="answer">Válasz</p>
+                <div class="answer-body">
+                    <p class="answer-body">
+                        @if (elem.Contains("\n"))
+                        {
+                            char[] charArray = { '\n' };
+                            string[] lineList = elem.Split(charArray);
+                            foreach (string line in lineList)
+                            {
+                                <span>@line</span><br />
+                            }
+                        }
+                        else
+                        {
+                            <span>@elem</span>
+                        }
+                    </p>
+                </div>
+            }
+            counter++;
+        }
+    }
+</div>
+
+<div class="footer">
+    <form action="~/Chat/Index" method="post" id="myForm">
+        @if (Model[0] != "")
+        {
+            foreach (String elem in Model)
+            {
+                <textarea name="history" form="myForm" hidden>@elem</textarea>
+            }
+        }
+    <div class="question-box">
+        <textarea id="question" name="question" form="myForm" placeholder="Tegyen fel egy kérdést..." required></textarea>
+        <input type="submit" value="Kérdés" />
+    </div>    
+    </form>
+</div>
+
+<script>
+    window.scrollTo(0, document.body.scrollHeight);
+</script>
